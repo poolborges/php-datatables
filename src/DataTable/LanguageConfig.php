@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
  * This class holds the language configuration values for a DataTable
  * 
  * @package DataTable
  * @author	Marc Roulias <marc@lampjunkie.com>
  */
-class DataTable_LanguageConfig
+class LanguageConfig
 {
   protected $paginateFirst;
   protected $paginateLast;

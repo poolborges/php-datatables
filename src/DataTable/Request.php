@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
  * This class holds the values that are passed along in a DataTable AJAX request
  * 
  * @package DataTable
  * @author	Marc Roulias <marc@lampjunkie.com>
  */
-class DataTable_Request
+class Request
 {
   /**
    * The current start position

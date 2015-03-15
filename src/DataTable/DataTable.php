@@ -9,15 +9,17 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
  * This is the base class that all DataTables need to extend
  * 
  */
-abstract class DataTable_DataTable
+abstract class DataTable
 {
   /**
-   * The DataTable_Config object
-   * @var DataTable_Config
+   * The DataTable\Config object
+   * @var DataTable\Config
    */
   protected $config;
   
@@ -31,7 +33,7 @@ abstract class DataTable_DataTable
   /**
    * The server parameters passed in the AJAX request
    * 
-   * @var DataTable_Request
+   * @var DataTable\Request
    */
   protected $request;
 
@@ -51,14 +53,14 @@ abstract class DataTable_DataTable
   protected $columnIndexNameCache;
 
   /**
-   * Creates a new DataTable using the given DataTable_Config object
+   * Creates a new DataTable using the given DataTable\Config object
    * 
-   * @param DataTable_Config $config
+   * @param DataTable\Config $config
    */
-  public function __construct(DataTable_Config $config = null)
+  public function __construct(Config $config = null)
   {
     if(is_null($config)){
-      throw new DataTable_DataTableException("A DataTable_Config object is required.");
+      throw new DataTableException("A DataTable\Config object is required.");
     }
 
     $this->config = $config;
@@ -77,12 +79,12 @@ abstract class DataTable_DataTable
   /**
    * Load data for an AJAX request
    * 
-   * This method must return a DataTable_DataResult object
+   * This method must return a DataTable\DataResult object
    * 
-   * @param DataTable_ServerParameterHolder $parameters
-   * @return DataTable_DataResult
+   * @param DataTable\ServerParameterHolder $parameters
+   * @return DataTable\DataResult
    */
-  abstract protected function loadData(DataTable_Request $request);
+  abstract protected function loadData(Request $request);
 
   /**
    * Override this method to return the javascript function that
@@ -148,7 +150,7 @@ abstract class DataTable_DataTable
   public function render()
   {
     if(is_null($this->config)){
-      throw new DataTable_DataTableException("A DataTable_Config object is required.");
+      throw new DataTableException("A DataTable\Config object is required.");
     }
 
     return $this->renderHtml() . $this->renderJs();
@@ -157,13 +159,13 @@ abstract class DataTable_DataTable
   /**
    * Get the JSON formatted date for a AJAX request
    * 
-   * @param DataTable_ServerParameterHolder $serverParameters
+   * @param DataTable\ServerParameterHolder $serverParameters
    * @return string
    */
-  public function renderJson(DataTable_Request $request)
+  public function renderJson(Request $request)
   {
     if(is_null($this->config)){
-      throw new DataTable_DataTableException("A DataTable_Config object is required.");
+      throw new DataTableException("A DataTable\Config object is required.");
     }
 
     $this->request = $request;
@@ -172,12 +174,12 @@ abstract class DataTable_DataTable
   }
 
   /**
-   * Render the return JSON data for the AJAX request with the DataTable_DataResult
+   * Render the return JSON data for the AJAX request with the DataTable\DataResult
    * returned from the current DataTable's loadData() method
    * 
-   * @param DataTable_DataResult $result
+   * @param DataTable\DataResult $result
    */
-  protected function renderReturnData(DataTable_DataResult $result)
+  protected function renderReturnData(DataResult $result)
   {
     $rows = array();
 
@@ -211,10 +213,10 @@ abstract class DataTable_DataTable
    * to calling the method on the object for the current row
    * 
    * @param object $object
-   * @param DataTable_Column $column
+   * @param DataTable\Column $column
    * @return mixed
    */
-  protected function getDataForColumn($object, DataTable_Column $column)
+  protected function getDataForColumn($object, Column $column)
   {
     $getter = $column->getGetMethod();
 
@@ -225,7 +227,7 @@ abstract class DataTable_DataTable
       if(method_exists($object, $getter)){
         return call_user_func(array($object, $getter));
       } else {
-        throw new DataTable_DataTableException("$getter() method is required in " . get_class($object) . " or " . get_class($this));
+        throw new DataTableException("$getter() method is required in " . get_class($object) . " or " . get_class($this));
       }
     }
   }
@@ -317,7 +319,7 @@ abstract class DataTable_DataTable
     }
 
     // make a fake request object
-    $request = new DataTable_Request();
+    $request = new Request();
     $request->setDisplayStart(0);
     $request->setDisplayLength($this->config->getStaticMaxLength());
     $request->setSortColumnIndex($sortColumnIndex);
@@ -349,7 +351,7 @@ abstract class DataTable_DataTable
   }
 
   /**
-   * Convert all the DataTable_Config options into a javascript array string
+   * Convert all the DataTable\Config options into a javascript array string
    * 
    * @return string
    */
@@ -658,7 +660,7 @@ abstract class DataTable_DataTable
    * Set the ajax source url for the current object
    * 
    * This overrides the value that may have been set on
-   * the DataTable_Config object
+   * the DataTable\Config object
    * 
    * @param string $ajaxDataUrl
    */
@@ -668,7 +670,7 @@ abstract class DataTable_DataTable
   }
 
   /**
-   * Get the ajax source url that was set either on the DataTable_Config
+   * Get the ajax source url that was set either on the DataTable\Config
    * object or on the current DataTable object
    * 
    * @return string

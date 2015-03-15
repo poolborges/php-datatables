@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
- * This class represents a collection of DataTable_Column objects
+ * This class represents a collection of DataTable\Column objects
  * 
  * @package DataTable
  * @author	Marc Roulias <marc@lampjunkie.com>
  */
-class DataTable_ColumnCollection implements Iterator
+class ColumnCollection implements \Iterator
 {
   protected $items = array();
   protected $index = 0;
@@ -25,7 +27,7 @@ class DataTable_ColumnCollection implements Iterator
     $this->items = $items;
   }
 
-  public function add(DataTable_Column $item)
+  public function add(Column $item)
   {
     $this->items[] = $item;
     return $this;

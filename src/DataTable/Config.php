@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
  * This class holds all of the configuration values for a DataTable
  *
  * @package DataTable
  * @author	Marc Roulias <marc@lampjunkie.com>
  */
-class DataTable_Config
+class Config
 {
   /**
    * The possible pagination types
@@ -25,7 +27,7 @@ class DataTable_Config
 
   /**
    * The collection of columns
-   * @var DataTable_ColumnCollection
+   * @var DataTable\ColumnCollection
    */
   protected $columns;
 
@@ -81,7 +83,7 @@ class DataTable_Config
 
   public function __construct()
   {
-    $this->columns = new DataTable_ColumnCollection();
+    $this->columns = new ColumnCollection();
   }
 
   public function setColumns($columns)
@@ -293,7 +295,7 @@ class DataTable_Config
     return $this->paginationType;
   }
 
-  public function setLanguageConfig(DataTable_LanguageConfig $languageConfig)
+  public function setLanguageConfig(LanguageConfig $languageConfig)
   {
     $this->languageConfig = $languageConfig;
     return $this;

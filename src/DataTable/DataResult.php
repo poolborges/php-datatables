@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
  * This class wraps the data that needs to be returned from a DataTable::loadData() method
  *
  * @package DataTable
  * @author	Marc Roulias <marc@lampjunkie.com>
  */
-class DataTable_DataResult
+class DataResult
 {
   /**
    * The results to pass back to the DataTable rendering

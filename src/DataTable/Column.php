@@ -9,13 +9,15 @@
  * file that was distributed with this source code.
  */
 
+namespace DataTable;
+
 /**
  * This class holds the configuration values for a column in a DataTable
  *
  * @package DataTable
  * @author	Marc Roulias <marc@lampjunkie.com>
  */
-class DataTable_Column
+class Column
 {
   /**
    * The name of the column
