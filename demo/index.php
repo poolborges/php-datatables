@@ -26,8 +26,12 @@
  */
 
 // register the DataTable autoloader
-include('../src/DataTable/Autoloader.php');
-spl_autoload_register(array('DataTable_Autoloader', 'autoload'));
+//include('../src/DataTable/Autoloader.php');
+//spl_autoload_register(array('DataTable\Autoloader', 'autoload'));
+
+//use DataTable;
+
+include('../vendor/autoload.php');
 
 // include the Demo DataTable class
 include('DemoDataTable.php');

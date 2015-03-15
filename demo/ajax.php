@@ -22,8 +22,7 @@
  */
 
 // register the DataTable autoloader
-include('../src/DataTable/Autoloader.php');
-spl_autoload_register(array('DataTable_Autoloader', 'autoload'));
+include('../vendor/autoload.php');
 
 // include the Demo DataTable class
 include_once('DemoDataTable.php');
@@ -50,8 +49,8 @@ $table = new DemoDataTable();
 // set selected Browser Service to the demo DataTable
 $table->setBrowserService($browserService);
 
-// convert DataTable AJAX parameters in request to a DataTable_Request
-$request = new DataTable_Request();
+// convert DataTable AJAX parameters in request to a DataTable\Request
+$request = new DataTable\Request();
 $request->fromPhpRequest($_REQUEST);
 
 // render the JSON data string

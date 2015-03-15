@@ -9,26 +9,28 @@
  * file that was distributed with this source code.
  */
 
+//use DataTable;
+
 /**
- * Demonstration of implementing DataTable_DataTable
+ * Demonstration of implementing DataTable\DataTable
  * 
- * This class shows how to extend and implement DataTable_DataTable
+ * This class shows how to extend and implement DataTable\DataTable
  * 
  * As a simple example this table is set up as an AJAX-enabled
  * table and pulls it's data from a given IBrowserService implementation
  * 
  */
-class DemoDataTable extends DataTable_DataTable
+class DemoDataTable extends DataTable\DataTable
 {
   /**
    * Build the demo configuration for this table
    * 
-   * @param DataTable_Config $config
+   * @param DataTable\Config $config
    */
-  public function __construct(DataTable_Config $config = null)
+  public function __construct(DataTable\Config $config = null)
   {
     // create first column
-    $column1 = new DataTable_Column();
+    $column1 = new DataTable\Column();
     $column1->setName("renderingEngine")
             ->setTitle("Rendering Engine")
             ->setGetMethod("getRenderingEngine")
@@ -37,7 +39,7 @@ class DemoDataTable extends DataTable_DataTable
             ->setIsDefaultSort(true);
 
     // create second column
-    $column2 = new DataTable_Column();
+    $column2 = new DataTable\Column();
     $column2->setName("browser")
             ->setTitle("Browser")
             ->setGetMethod("getBrowser")
@@ -46,7 +48,7 @@ class DemoDataTable extends DataTable_DataTable
             ->setIsSearchable(true);
 
     // create third column
-    $column3 = new DataTable_Column();
+    $column3 = new DataTable\Column();
     $column3->setName("platform")
             ->setTitle("Platform(s)")
             ->setGetMethod("getPlatform")
@@ -55,7 +57,7 @@ class DemoDataTable extends DataTable_DataTable
             ->setIsDefaultSort(false);
 
     // create fourth column
-    $column4 = new DataTable_Column();
+    $column4 = new DataTable\Column();
     $column4->setName("engineVersion")
             ->setTitle("Engine Version")
             ->setGetMethod("getEngineVersion")
@@ -64,7 +66,7 @@ class DemoDataTable extends DataTable_DataTable
             ->setIsDefaultSort(false);
     
     // create fifth column
-    $column5 = new DataTable_Column();
+    $column5 = new DataTable\Column();
     $column5->setName("cssGrade")
             ->setTitle("CSS Grade")
             ->setGetMethod("getCssGrade")
@@ -73,20 +75,20 @@ class DemoDataTable extends DataTable_DataTable
             ->setIsDefaultSort(false);
 
     // create the actions column
-    $column6 = new DataTable_Column();
+    $column6 = new DataTable\Column();
     $column6->setName("actions")
             ->setTitle("Actions")
             ->setGetMethod("getActions");
     
     // create an invisible column
-    $column7 = new DataTable_Column();
+    $column7 = new DataTable\Column();
     $column7->setName("invisible")
             ->setTitle("Invisible")
             ->setIsVisible(false)
             ->setGetMethod("getInvisible");
     
     // create config
-    $config = new DataTable_Config();
+    $config = new DataTable\Config();
     
     // add columns to collection
     $config->getColumns()->add($column1)
@@ -98,7 +100,7 @@ class DemoDataTable extends DataTable_DataTable
                          ->add($column7);
      
     // build the language configuration
-    $languageConfig = new DataTable_LanguageConfig();
+    $languageConfig = new DataTable\LanguageConfig();
     $languageConfig->setPaginateFirst("Beginning")
                    ->setPaginateLast("End")
                    ->setSearch("Find it:");
@@ -116,11 +118,11 @@ class DemoDataTable extends DataTable_DataTable
            ->setIsSortEnabled(true)
            ->setIsAutoWidthEnabled(true)
            ->setIsScrollCollapseEnabled(false)
-           ->setPaginationType(DataTable_Config::PAGINATION_TYPE_FULL_NUMBERS)
+           ->setPaginationType(DataTable\Config::PAGINATION_TYPE_FULL_NUMBERS)
            ->setIsJQueryUIEnabled(false)
            ->setIsServerSideEnabled(true);
 
-    // pass DataTable_Config to the parent
+    // pass DataTable\Config to the parent
     parent::__construct($config);
   }
 
@@ -143,9 +145,9 @@ class DemoDataTable extends DataTable_DataTable
    * a count of the total results, limiting them, ordering them, and
    * searching if a search term is passed in.
    * 
-   * @see DataTable_DataTable::loadData()
+   * @see DataTable\DataTable::loadData()
    */
-  public function loadData(DataTable_Request $request)
+  public function loadData(DataTable\Request $request)
   {
     // get the name of the sort property that was passed in
     $sortProperty = $this->config->getColumns()->get($request->getSortColumnIndex())->getSortKey();
@@ -187,12 +189,12 @@ class DemoDataTable extends DataTable_DataTable
     }
 
     // return the final result set
-    return new DataTable_DataResult($results, $totalLength, $totalLength);
+    return new DataTable\DataResult($results, $totalLength, $totalLength);
   }
 
   /**
    * (non-PHPdoc)
-   * @see DataTable_DataTable::getTableId()
+   * @see DataTable\DataTable::getTableId()
    */
   public function getTableId()
   {
