@@ -20,7 +20,7 @@ The basic steps to using php-datatables are:
   
 ## Requirements
   1. Require PHP >= 5.3(support for Namespaces)
-  2. DataTables-1.8.1 (http://datatables.net/releases/DataTables-1.8.1.zip)
+  2. DataTables >= 1.10.0 (http://datatables.net/upgrade/1.10, http://datatables.net/upgrade/1.10-convert)
 
 ## Demo
 
