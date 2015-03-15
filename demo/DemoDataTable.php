@@ -103,22 +103,23 @@ class DemoDataTable extends DataTable\DataTable
     $languageConfig = new DataTable\LanguageConfig();
     $languageConfig->setPaginateFirst("Beginning")
                    ->setPaginateLast("End")
-                   ->setSearch("Find it:");
+                   ->setSearch("Find it:")
+                   ->setZeroRecords("Nothing found, sorry");
 
     // add LangugateConfig to the DataTableConfig object
     $config->setLanguageConfig($languageConfig);
 
     // set data table options
     $config->setClass("display")
-           ->setDisplayLength(10)
+           //->setPageLength(10)
            ->setIsPaginationEnabled(true)
            ->setIsLengthChangeEnabled(true)
-           ->setIsFilterEnabled(true)
+           ->setIsSearchingEnabled(true)
            ->setIsInfoEnabled(true)
-           ->setIsSortEnabled(true)
+           ->setIsOrderingEnabled(true)
            ->setIsAutoWidthEnabled(true)
            ->setIsScrollCollapseEnabled(false)
-           ->setPaginationType(DataTable\Config::PAGINATION_TYPE_FULL_NUMBERS)
+           ->setPagingType(DataTable\Config::PAGINATION_TYPE_FULL_NUMBERS)
            ->setIsJQueryUIEnabled(false)
            ->setIsServerSideEnabled(true);
 
@@ -225,14 +226,14 @@ class DemoDataTable extends DataTable\DataTable
   }
 
   /**
-   * Add a callback function for 'fnRowCallback'
+   * Add a callback function for 'rowCallback'
    * 
    * @return string
    */
   protected function getRowCallbackFunction()
   {
     return "
-            function( nRow, aData, iDisplayIndex, iDisplayIndexFull ) {
+            function( nRow, aData ) {
 
     			/* Bold the grade for all 'A' grade browsers */
     			if ( aData[{$this->getColumnIndexByName('cssGrade')}] == 'A' )

@@ -53,11 +53,11 @@ $table->setAjaxDataUrl('ajax.php');
 	<title>php-datatables Demo</title>
 
 	<style type="text/css" title="currentStyle">
-		@import "DataTables-1.8.1/media/css/demo_table.css";
+		@import "DataTables-1.10.5/media/css/jquery.dataTables.css";
 	</style>
 	
-	<script type="text/javascript" language="javascript" src="DataTables-1.8.1/media/js/jquery.js"></script>
-	<script type="text/javascript" language="javascript" src="DataTables-1.8.1/media/js/jquery.dataTables.js"></script>
+	<script type="text/javascript" language="javascript" src="DataTables-1.10.5/media/js/jquery.js"></script>
+	<script type="text/javascript" language="javascript" src="DataTables-1.10.5/media/js/jquery.dataTables.js"></script>
 
 </head>
 

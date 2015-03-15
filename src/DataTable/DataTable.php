@@ -88,7 +88,7 @@ abstract class DataTable
 
   /**
    * Override this method to return the javascript function that
-   * will be passed as the 'fnRowCallback' option
+   * will be passed as the 'rowCallback' option
    * 
    * @return string
    */
@@ -133,14 +133,6 @@ abstract class DataTable
    * @return string
    */
   protected function getInfoCallbackFunction(){}
-  
-  /**
-   * Override this method to return the javascript function that
-   * will be passed as the 'fnCookieCallback' option
-   * 
-   * @return string
-   */
-  protected function getCookieCallbackFunction(){}
   
   /**
    * Render the initial HTML and javascript to instantiate and display the DataTable
@@ -198,7 +190,7 @@ abstract class DataTable
 			'iTotalRecords' => $result->getNumTotalResults(),
 			'iTotalDisplayRecords' => !is_null($result->getNumFilteredResults()) ? 
                                         $result->getNumFilteredResults() : $result->getNumTotalResults(),
-			'aaData' => $rows,
+			'data' => $rows,
 			'sEcho' => $this->request->getEcho(),		
     );
 
@@ -342,7 +334,7 @@ abstract class DataTable
     $js = "
 			<script type=\"text/javascript\">
 			    $(document).ready(function(){
-					var {$this->getTableId()} = $('#{$this->getTableId()}').dataTable({$this->renderDataTableOptions()});
+					var {$this->getTableId()} = $('#{$this->getTableId()}').DataTable({$this->renderDataTableOptions()});
 			    });
 			</script>
 		";
@@ -359,85 +351,71 @@ abstract class DataTable
   {
     $options = array();
 
-    $options["bPaginate"]       = $this->config->isPaginationEnabled();
-    $options["bLengthChange"] 	= $this->config->isLengthChangeEnabled();
-    $options["bProcessing"] 	= $this->config->isProcessingEnabled();
-    $options["bFilter"]         = $this->config->isFilterEnabled();
-    $options["bSort"] 	    	= $this->config->isSortEnabled();
-    $options["bInfo"] 	      	= $this->config->isInfoEnabled();
-    $options["bAutoWidth"]      = $this->config->isAutoWidthEnabled();
-    $options["bScrollCollapse"]	= $this->config->isScrollCollapseEnabled();
-    $options["bScrollInfinite"]	= $this->config->isScrollInfiniteEnabled();
-    $options["iDisplayLength"] 	= $this->config->getDisplayLength();
-    $options["bJQueryUI"]       = $this->config->isJQueryUIEnabled();
-    $options["sPaginationType"]	= $this->config->getPaginationType();    
+    $options["paging"]          = $this->config->isPaginationEnabled();
+    $options["lengthChange"] 	= $this->config->isLengthChangeEnabled();
+    $options["processing"] 	= $this->config->isProcessingEnabled();
+    $options["searching"]       = $this->config->isSearchingEnabled();
+    $options["ordering"] 	= $this->config->isOrderingEnabled();
+    $options["info"] 	      	= $this->config->isInfoEnabled();
+    $options["autoWidth"]       = $this->config->isAutoWidthEnabled();
+    $options["scrollCollapse"]	= $this->config->isScrollCollapseEnabled();
+    $options["pageLength"] 	= $this->config->getPageLength();
+    $options["jQueryUI"]        = $this->config->isJQueryUIEnabled();
+    $options["pagingType"]	= $this->config->getPagingType();    
 
-    $options["bStateSave"]      = $this->config->isSaveStateEnabled();
-    $options["iCookieDuration"] = $this->config->getCookieDuration();
-    $options["asStripClasses"]  = $this->config->getStripClasses();
+    $options["stateSave"]       = $this->config->isSaveStateEnabled();
+    $options["stateDuration"]   = $this->config->getStateDuration();
     
-    $options["aoColumns"]       = $this->renderDataTableColumnOptions();
-    $options["aaSorting"]     	= $this->renderDefaultSortColumns();
-    $options["aLengthMenu"] 	= $this->renderLengthMenu();
+    $options["columns"]         = $this->renderDataTableColumnOptions();
+    $options["order"]     	= $this->renderDefaultOrderColumns();
+    $options["lengthMenu"] 	= $this->renderLengthMenu();
     
     if($this->config->isServerSideEnabled()){
-      $options["bServerSide"] 	= $this->config->isServerSideEnabled();
-      $options["sAjaxSource"] 	= $this->getAjaxSource();
+      $options["serverSide"] 	= $this->config->isServerSideEnabled();
+      $options["sAjaxSource"] 	= $this->getAjaxSource();       //TODO - check why if change this to ajax, get ERROR
     }  
     
     if(!is_null($this->config->getScrollX())){
-      $options["sScrollX"] = $this->config->getScrollX();
+      $options["scrollX"] = $this->config->getScrollX();
     }
 
     if(!is_null($this->config->getScrollY())){
-      $options["sScrollY"] = $this->config->getScrollY();
-    }
-    
-    if(!is_null($this->config->getScrollLoadGap())){
-      $options["iScrollLoadGap"] = $this->config->getScrollLoadGap();
+      $options["scrollY"] = $this->config->getScrollY();
     }
     
     if(!is_null($this->config->getLanguageConfig())){
-      $options["oLanguage"]	= $this->renderLanguageConfig();
-    }
-      
-    if(!is_null($this->config->getCookiePrefix())){
-      $options["sCookiePrefix"]	= $this->config->getCookiePrefix();
+      $options["language"]	= $this->renderLanguageConfig();
     }
     
     if(!is_null($this->config->getDom())){
-      $options["sDom"] = $this->config->getDom();
+      $options["dom"] = $this->config->getDom();
     }
     
     // =====================================================================================
     // add callback functions
     // =====================================================================================
     if(!is_null($this->getRowCallbackFunction())){
-      $options["fnRowCallback"] = $this->getCallbackFunctionProxy('getRowCallbackFunction');
+      $options["rowCallback"] = $this->getCallbackFunctionProxy('getRowCallbackFunction');
     }
 
     if(!is_null($this->getInitCompleteFunction())){
-      $options["fnInitComplete"] = $this->getCallbackFunctionProxy('getInitCompleteFunction');
+      $options["initComplete"] = $this->getCallbackFunctionProxy('getInitCompleteFunction');
     } 
     
     if(!is_null($this->getDrawCallbackFunction())){
-      $options["fnDrawCallback"] = $this->getCallbackFunctionProxy('getDrawCallbackFunction');
+      $options["drawCallback"] = $this->getCallbackFunctionProxy('getDrawCallbackFunction');
     } 
     
     if(!is_null($this->getFooterCallbackFunction())){
-      $options["fnFooterCallback"] = $this->getCallbackFunctionProxy('getFooterCallbackFunction');
+      $options["footerCallback"] = $this->getCallbackFunctionProxy('getFooterCallbackFunction');
     } 
     
     if(!is_null($this->getFooterCallbackFunction())){
-      $options["fnHeaderCallback"] = $this->getCallbackFunctionProxy('getHeaderCallbackFunction');
+      $options["headerCallback"] = $this->getCallbackFunctionProxy('getHeaderCallbackFunction');
     }  
     
     if(!is_null($this->getInfoCallbackFunction())){
-      $options["fnInfoCallback"] = $this->getCallbackFunctionProxy('getInfoCallbackFunction');
-    } 
-    
-    if(!is_null($this->getCookieCallbackFunction())){
-      $options["fnCookieCallback"] = $this->getCallbackFunctionProxy('getCookieCallbackFunction');
+      $options["infoCallback"] = $this->getCallbackFunctionProxy('getInfoCallbackFunction');
     } 
     
     // build the initial json object
@@ -522,7 +500,7 @@ abstract class DataTable
   }
   
   /**
-   * Build the array for the 'aoColumns' DataTable option
+   * Build the array for the 'columns' DataTable option
    * 
    * @return array
    */
@@ -533,22 +511,22 @@ abstract class DataTable
     foreach($this->config->getColumns() as $column){
 
       $tempColumn = array(
-				"bSortable" => $column->isSortable(),
-				"sName" => $column->getName(),
-				"bVisible" => $column->isVisible(),
-                "bSearchable" => $column->isSearchable(),
+				"orderable" => $column->isSortable(),
+				"name" => $column->getName(),
+				"visible" => $column->isVisible(),
+                "searchable" => $column->isSearchable(),
       );
 
       if(!is_null($column->getWidth())){
-        $tempColumn['sWidth'] = $column->getWidth();
+        $tempColumn['width'] = $column->getWidth();
       }
 
       if(!is_null($column->getClass())){
-        $tempColumn['sClass'] = $column->getClass();
+        $tempColumn['className'] = $column->getClass();
       }
 
       if(!is_null($column->getRenderFunction())){
-        $tempColumn['fnRender'] = $this->buildJsonFunctionKey($column->getRenderFunction());
+        $tempColumn['render'] = $this->buildJsonFunctionKey($column->getRenderFunction());
       }
       
       $columns[] = $tempColumn;
@@ -558,11 +536,11 @@ abstract class DataTable
   }
 
   /**
-   * Build the array for the 'aaSorting' option
+   * Build the array for the 'order' option
    * 
    * @return array
    */
-  protected function renderDefaultSortColumns()
+  protected function renderDefaultOrderColumns()
   {
     $columns = array();
 
@@ -597,60 +575,60 @@ abstract class DataTable
     $paginate = array();
 
     if(!is_null($this->config->getLanguageConfig()->getPaginateFirst())){
-	  $paginate["sFirst"] = $this->config->getLanguageConfig()->getPaginateFirst();
+	  $paginate["first"] = $this->config->getLanguageConfig()->getPaginateFirst();
     }
 
     if(!is_null($this->config->getLanguageConfig()->getPaginateLast())){
-	  $paginate["sLast"] = $this->config->getLanguageConfig()->getPaginateLast();
+	  $paginate["last"] = $this->config->getLanguageConfig()->getPaginateLast();
     }
 
     if(!is_null($this->config->getLanguageConfig()->getPaginateNext())){
-	  $paginate["sNext"] = $this->config->getLanguageConfig()->getPaginateNext();
+	  $paginate["next"] = $this->config->getLanguageConfig()->getPaginateNext();
     }
 
     if(!is_null($this->config->getLanguageConfig()->getPaginatePrevious())){
-	  $paginate["sPrevious"] = $this->config->getLanguageConfig()->getPaginatePrevious();
+	  $paginate["previous"] = $this->config->getLanguageConfig()->getPaginatePrevious();
     }
 
     // add oPaginate to options if anything was set for object
     if(count($paginate) > 0){
-      $options["oPaginate"] = $paginate;
+      $options["paginate"] = $paginate;
     }
 
     if(!is_null($this->config->getLanguageConfig()->getEmptyTable())){
-	  $options["sEmptyTable"] = $this->config->getLanguageConfig()->getEmptyTable();
+	  $options["emptyTable"] = $this->config->getLanguageConfig()->getEmptyTable();
     }
     
     if(!is_null($this->config->getLanguageConfig()->getInfo())){
-	  $options["sInfo"] = $this->config->getLanguageConfig()->getInfo();
+	  $options["info"] = $this->config->getLanguageConfig()->getInfo();
     }
       
     if(!is_null($this->config->getLanguageConfig()->getInfoEmpty())){
-	  $options["sInfoEmpty"] = $this->config->getLanguageConfig()->getInfoEmpty();
+	  $options["infoEmpty"] = $this->config->getLanguageConfig()->getInfoEmpty();
     }
       
     if(!is_null($this->config->getLanguageConfig()->getInfoFiltered())){
-	  $options["sInfoFiltered"] = $this->config->getLanguageConfig()->getInfoFiltered();
+	  $options["infoFiltered"] = $this->config->getLanguageConfig()->getInfoFiltered();
     }
      
     if(!is_null($this->config->getLanguageConfig()->getInfoPostFix())){
-	  $options["sInfoPostFix"] = $this->config->getLanguageConfig()->getInfoPostFix();
+	  $options["infoPostFix"] = $this->config->getLanguageConfig()->getInfoPostFix();
     }
     
     if(!is_null($this->config->getLanguageConfig()->getLengthMenu())){
-	  $options["sLengthMenu"] = $this->config->getLanguageConfig()->getLengthMenu();
+	  $options["lengthMenu"] = $this->config->getLanguageConfig()->getLengthMenu();
     }
       
     if(!is_null($this->config->getLanguageConfig()->getSearch())){
-	  $options["sSearch"] = $this->config->getLanguageConfig()->getSearch();
+	  $options["search"] = $this->config->getLanguageConfig()->getSearch();
     }
 
     if(!is_null($this->config->getLanguageConfig()->getZeroRecords())){
-	  $options["sZeroRecords"] = $this->config->getLanguageConfig()->getZeroRecords();
+	  $options["zeroRecords"] = $this->config->getLanguageConfig()->getZeroRecords();
     }
     
     if(!is_null($this->config->getLanguageConfig()->getUrl())){
-	  $options["sUrl"] = $this->config->getLanguageConfig()->getUrl();
+	  $options["url"] = $this->config->getLanguageConfig()->getUrl();
     }
 
     return $options;

@@ -35,7 +35,7 @@ class Config
    * The default display length of the table
    * @var integer
    */
-  protected $displayLength           = 10;
+  protected $pageLength           = 10;
 
   /**
    * The AJAX source URL
@@ -46,25 +46,22 @@ class Config
   protected $isServerSideEnabled     = false;
   protected $isPaginationEnabled     = false;
   protected $isLengthChangeEnabled   = false;
-  protected $isFilterEnabled         = false;
+  protected $isSearchingEnabled      = false;
   protected $isInfoEnabled           = false;
-  protected $isSortEnabled           = true;
+  protected $isOrderingEnabled       = true;
   protected $isJQueryUIEnabled       = true;
   protected $isAutoWidthEnabled      = true;
   protected $isScrollCollapseEnabled = false;
-  protected $isScrollInfiniteEnabled = false;
   protected $class;
   protected $lengthMenu              = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
   protected $scrollX;
   protected $scrollY;
-  protected $scrollLoadGap;
-  protected $paginationType          = self::PAGINATION_TYPE_FULL_NUMBERS;
+  protected $pagingType              = self::PAGINATION_TYPE_FULL_NUMBERS;
   protected $languageConfig;
   protected $loadingHtml             = '<p>loading data</p>';
-  protected $cookieDuration          = 7200;
+  protected $stateDuration           = 7200;
   protected $isSaveStateEnabled      = false;
-  protected $cookiePrefix;
-  protected $stripClasses            = array('odd', 'even');
+
 
   /**
    * see http://datatables.net/usage/options#sDom
@@ -97,15 +94,15 @@ class Config
     return $this->columns;
   }
 
-  public function setDisplayLength($displayLength)
+  public function setPageLength($pageLength)
   {
-    $this->displayLength = $displayLength;
+    $this->pageLength = $pageLength;
     return $this;
   }
 
-  public function getDisplayLength()
+  public function getPageLength()
   {
-    return $this->displayLength;
+    return $this->pageLength;
   }
 
   public function setIsPaginationEnabled($isPaginationEnabled)
@@ -130,15 +127,15 @@ class Config
     return $this->isLengthChangeEnabled;
   }
 
-  public function setIsFilterEnabled($isFilterEnabled)
+  public function setIsSearchingEnabled($isSearchingEnabled)
   {
-    $this->isFilterEnabled = $isFilterEnabled;
+    $this->isSearchingEnabled = $isSearchingEnabled;
     return $this;
   }
 
-  public function isFilterEnabled()
+  public function isSearchingEnabled()
   {
-    return $this->isFilterEnabled;
+    return $this->isSearchingEnabled;
   }
 
   public function setIsInfoEnabled($isInfoEnabled)
@@ -152,15 +149,15 @@ class Config
     return $this->isInfoEnabled;
   }
 
-  public function setIsSortEnabled($isSortEnabled)
+  public function setIsOrderingEnabled($isOrderingEnabled)
   {
-    $this->isSortEnabled = $isSortEnabled;
+    $this->isOrderingEnabled = $isOrderingEnabled;
     return $this;
   }
 
-  public function isSortEnabled()
+  public function isOrderingEnabled()
   {
-    return $this->isSortEnabled;
+    return $this->isOrderingEnabled;
   }
 
   public function setAjaxSource($ajaxSource)
@@ -273,26 +270,15 @@ class Config
     return $this->scrollY;
   }
 
-  public function getScrollLoadGap()
+  public function setPagingType($pagingType)
   {
-    return $this->scrollLoadGap;
-  }
-
-  public function setScrollLoadGap($scrollLoadGap)
-  {
-    $this->scrollLoadGap = $scrollLoadGap;
+    $this->pagingType = $pagingType;
     return $this;
   }
 
-  public function setPaginationType($paginationType)
+  public function getPagingType()
   {
-    $this->paginationType = $paginationType;
-    return $this;
-  }
-
-  public function getPaginationType()
-  {
-    return $this->paginationType;
+    return $this->pagingType;
   }
 
   public function setLanguageConfig(LanguageConfig $languageConfig)
@@ -304,17 +290,6 @@ class Config
   public function getLanguageConfig()
   {
     return $this->languageConfig;
-  }
-
-  public function isScrollInfiniteEnabled()
-  {
-    return $this->isScrollInfiniteEnabled;
-  }
-
-  public function setIsScrollInfiniteEnabled($isScrollInfiniteEnabled)
-  {
-    $this->isScrollInfiniteEnabled = $isScrollInfiniteEnabled;
-    return $this;
   }
 
   public function setLoadingHtml($loadingHtml)
@@ -329,14 +304,14 @@ class Config
   }
 
 
-  public function getCookieDuration()
+  public function getStateDuration()
   {
-    return $this->cookieDuration;
+    return $this->stateDuration;
   }
 
-  public function setCookieDuration($cookieDuration)
+  public function setStateDuration($stateDuration)
   {
-    $this->cookieDuration = $cookieDuration;
+    $this->stateDuration = $stateDuration;
     return $this;
   }
 
@@ -348,28 +323,6 @@ class Config
   public function setIsSaveStateEnabled($isSaveStateEnabled)
   {
     $this->isSaveStateEnabled = $isSaveStateEnabled;
-    return $this;
-  }
-
-  public function getCookiePrefix()
-  {
-    return $this->cookiePrefix;
-  }
-
-  public function setCookiePrefix($cookiePrefix)
-  {
-    $this->cookiePrefix = $cookiePrefix;
-    return $this;
-  }
-
-  public function getStripClasses()
-  {
-    return $this->stripClasses;
-  }
-
-  public function setStripClasses($stripClasses)
-  {
-    $this->stripClasses = $stripClasses;
     return $this;
   }
 
