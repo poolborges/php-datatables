@@ -17,10 +17,17 @@ The basic steps to using php-datatables are:
   1. Set configuration options on a config object.
   2. Implement a method to load an array of entity objects for your table to render.
   3. Implement methods to format the data for your columns.
+  
+## Requirements
+  1. Require PHP >= 5.3(support for Namespaces)
+  2. DataTables-1.8.1 (http://datatables.net/releases/DataTables-1.8.1.zip)
 
-### Demo
+## Demo
 
 Look at the files within the demo/ directory to see a basic example of php-datatables in action.
+To run this demo you need composer to generate autoload 
+  1. Download and install composer(Today everyone use composer. if you not using yet, YOU MUST) 
+  2. execute "composer instal "(will generate autoload for you)
 
 - ajax.php     
    
@@ -36,7 +43,7 @@ Look at the files within the demo/ directory to see a basic example of php-datat
     
 - DemoDataTable   
 
-    An example DataTable_DataTable implementation which loads data from a csv file
+    An example DataTable\DataTable implementation which loads data from a csv file
     
 - index.php      
 
@@ -45,7 +52,7 @@ Look at the files within the demo/ directory to see a basic example of php-datat
 
 ## Class Overview
 
-### DataTable_DataTable
+### DataTable\DataTable
 
 This class is the heart of the library. You simply extend this class for each DataTable that you will need
 in your application. The purpose of this class is to obtain the data for the table and to format the results
@@ -53,7 +60,7 @@ that will be output.
 
 Here are the basic requirements.
 
-1. Pass in a DataTable_Config object (see below).
+1. Pass in a DataTable\Config object (see below).
 
 	   Your DataTable will need a config object in order define the columns and various options. You can either
 	   pass this object into the constructor or define it within your constructor and pass it on to the parent
@@ -61,8 +68,8 @@ Here are the basic requirements.
 	
 2. Implement the loadData() method
 
-	   This method is where you pull the data you want displayed and return it within a DataTable_DataResult object.
-	   You are provided with a DataTable_Request object which allows you to pull the pagination information that
+	   This method is where you pull the data you want displayed and return it within a DataTable\DataResult object.
+	   You are provided with a DataTable\Request object which allows you to pull the pagination information that
 	   is passed in through AJAX requests.   
 	
 3. Implement the getTableId() method
@@ -72,8 +79,8 @@ Here are the basic requirements.
 	
 4. Implement getter methods to format colummn values
 
-	   In each DataTable_Column object (see below) you must define a getter method name so that the column knows
-	   where to obtain the value for each entity object. By default, DataTable_DataTable will call that getter
+	   In each DataTable\Column object (see below) you must define a getter method name so that the column knows
+	   where to obtain the value for each entity object. By default, DataTable\DataTable will call that getter
 	   method on the entity object. However, you can implement the getter method within your DataTable class
 	   in order to format the column values however you want.
 	
@@ -82,7 +89,7 @@ Here are the basic requirements.
 	   Example configuration of getter method for a column:
 	
 	           // configure column
-	           $column = new DataTable_Column();
+	           $column = new DataTable\Column();
 	           $column->setName('fullName')
 	                  ->setTitle('Full Name')
 	                  ->setGetMethod('getFullName');
@@ -100,7 +107,7 @@ Here are the basic requirements.
 5. Implement javascript callback functions
 
 	   If your datatable needs to implement the various DataTable callback methods (http://datatables.net/usage/callbacks)
-	   simply implement the various methods found within DataTable_DataTable.
+	   simply implement the various methods found within DataTable\DataTable.
 	
 			   protected function getRowCallbackFunction()
 			   { 
@@ -117,17 +124,17 @@ Here are the basic requirements.
 			   }
 
 
-### DataTable_Config
+### DataTable\Config
 
-This class defines all the configuration options for a DataTable. A DataTable_DataTable object expects to receive
-a DataTable_Config object. This object set's all the various options that get passed to the javascript table. This
-object also holds a collection of all the DataTable_Column definitions.
+This class defines all the configuration options for a DataTable. A DataTable\DataTable object expects to receive
+a DataTable\Config object. This object set's all the various options that get passed to the javascript table. This
+object also holds a collection of all the DataTable\Column definitions.
 
 Most of the time you will probably want to instantiate the config object in your __construct and pass it on to the parent
-class. However, you can create the config from outside and pass it in to your DataTable_DataTable class. This is useful 
+class. However, you can create the config from outside and pass it in to your DataTable\DataTable class. This is useful 
 if you want to load the configuration from somewhere else such as a database, etc.
 
-### DataTable_Column
+### DataTable\Column
 
 This class defines all the options for an individual column within the DataTable. Each column must at the very least
 have a name, title, and getter method name. You can configure whether columns are sortable, searchable, etc.
@@ -142,8 +149,8 @@ have a name, title, and getter method name. You can configure whether columns ar
 
 3. setGetMethod()
 
-    This method lets DataTable_DataTable know where it should obtain the value for the current column. First, it
-    will check to see if this method exists within your DataTable_DataTable implementing class. Otherwise, it
+    This method lets DataTable\DataTable know where it should obtain the value for the current column. First, it
+    will check to see if this method exists within your DataTable\DataTable implementing class. Otherwise, it
     will call the getter method on the entity object. 
 
 4. setSortKey()
@@ -152,30 +159,30 @@ have a name, title, and getter method name. You can configure whether columns ar
 
 Example:
 
-	    $column = new DataTable_Column();
+	    $column = new DataTable\Column();
 	    $column->setName("browser")
 	           ->setTitle("Browser")
 	           ->setGetMethod("getBrowser")
 	           ->setSortKey("b.browser")
 	           ->setIsSortable(true);
 
-### DataTable_Request
+### DataTable\Request
 
-An object of this class needs to be passed into the DataTable_DataTable->renderJson() method. This eventually gets
+An object of this class needs to be passed into the DataTable\DataTable->renderJson() method. This eventually gets
 passed into your loadData() implementation. This object simply stores the parameters that are passed from DataTables
 within AJAX requests and allow you to access them for pagination, sorting, and searching.
 
 By default, this class provides a hydration method to fill the object with the parameters from a $_GET, $_POST, or
 $_REQUEST array.
 
-		$request = new DataTable_Request();
+		$request = new DataTable\Request();
 		$request->fromPhpRequest($_REQUEST);
 
 You can extend this class to hydrate the parameters from some other framework specific request object if you need to.
 
-### DataTable_DataResult
+### DataTable\DataResult
 
-This is the type of object that is expected to be returned from your DataTable_DataTable->loadData() implementation.
+This is the type of object that is expected to be returned from your DataTable\DataTable->loadData() implementation.
 You just need to pass in the array of your entities and a count of the total number of results for pagination (total
 records for all pages).
 
@@ -194,8 +201,8 @@ Render AJAX response (ajax.php):
 		// instatiate new DataTable
 		$table = new MyDataTable();
 		
-		// convert DataTable AJAX parameters in request to a DataTable_Request
-		$request = new DataTable_Request();
+		// convert DataTable AJAX parameters in request to a DataTable\Request
+		$request = new DataTable\Request();
 		$request->fromPhpRequest($_REQUEST);
 		
 		// render the JSON data string
@@ -206,10 +213,10 @@ Render AJAX response (ajax.php):
 If you have a smaller data set that you want to render in a DataTable and thus
 don't need AJAX for your pagination, sorting you can easily switch to non-ajax mode.
 
-You just need to make sure that serverSideEnabled is set to false on your DataTable_Config object.
+You just need to make sure that serverSideEnabled is set to false on your DataTable\Config object.
 
-This will result in your loadData() method getting called when DataTable_Datatable->render() is called. The
-loadData() method will receive a DataTable_Request object which has the sorting set for whatever
+This will result in your loadData() method getting called when DataTable\Datatable->render() is called. The
+loadData() method will receive a DataTable\Request object which has the sorting set for whatever
 the default sort column is within your config. You may also want to set the staticMaxLength on the
 config object to let your loadData method know how to limit your results.
 
@@ -224,11 +231,11 @@ config object to let your loadData method know how to limit your results.
 ## Multi-Column Sorting
 
 If you need to sort against multiple columns, you can easily get the sorting information
-of all of the columns from the DataTable_Request object.
+of all of the columns from the DataTable\Request object.
 
   Example:
   
-        public function loadData(DataTable_Request $request)
+        public function loadData(DataTable\Request $request)
         {
           foreach($request->getSortColumns() as $sortColIndex => $sortDir){
             $sortKey = $this->getColumns()->get($sortColIndex)->getSortKey();
